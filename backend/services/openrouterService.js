@@ -8,12 +8,19 @@ try{
 
 const prompt=`
 
-Analyze employees:
+Analyze these employees and provide:
+
+1. Promotion Recommendation
+2. Employee Ranking
+3. Training Suggestions
+4. Feedback
+
+Employees:
 
 ${employees.map(
 (emp,index)=>`
 
-${index+1}
+${index+1})
 
 Name:
 ${emp.name}
@@ -22,18 +29,24 @@ Department:
 ${emp.department}
 
 Skills:
-${emp.skills.join(",")}
+${emp.skills.join(", ")}
 
-Performance:
+Performance Score:
 ${emp.performanceScore}
 
 Experience:
 ${emp.experience}
 
 `
-).join("")}
+).join("\n")}
 
-Return ONLY JSON:
+Return ONLY valid JSON.
+
+NO markdown.
+NO backticks.
+NO explanation.
+
+Format:
 
 {
 "employees":[
@@ -55,17 +68,14 @@ await axios.post(
 "https://openrouter.ai/api/v1/chat/completions",
 
 {
-
 model:
 "openai/gpt-oss-20b",
 
 messages:[
-
 {
 role:"user",
 content:prompt
 }
-
 ]
 
 },
@@ -86,13 +96,20 @@ Authorization:
 
 );
 
-return JSON.parse(
-
+let aiText=
 response.data
 .choices[0]
 .message
-.content
+.content;
 
+aiText=
+aiText
+.replace(/```json/g,"")
+.replace(/```/g,"")
+.trim();
+
+return JSON.parse(
+aiText
 );
 
 }
