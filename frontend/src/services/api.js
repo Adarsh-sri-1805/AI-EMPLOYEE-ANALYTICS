@@ -4,7 +4,7 @@ const API=
 axios.create({
 
 baseURL:
-"https://ai-employee-analytics.onrender.com/api"
+"https://ai-employee-analytics-1.onrender.com/api"
 
 });
 
